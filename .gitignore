@@ -1,8 +1,24 @@
+# Directories
+bin/
+target/
+.idea/
+.vscode/
+
+# Files
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.log.*
+*.tmp
+
+# Logs and temporary files
+*.log
+*.log.*
+*.tmp
 # Compiled class file
 *.class
-
-# Log file
-*.log
 
 # BlueJ files
 *.ctxt
