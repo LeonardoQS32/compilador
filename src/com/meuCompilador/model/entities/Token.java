@@ -36,7 +36,7 @@ public class Token {
     }
     @Override
     public String toString() {
-        return  type+ "=" + lexema + " ("+ position.getLine() + ", "+ position.getColumn() + ")";
+        return  type+ "\t | \t" + lexema + "\t | \t ("+ position.getLine() + ", "+ position.getColumn() + ")";
     }
     
 }
