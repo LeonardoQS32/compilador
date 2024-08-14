@@ -16,7 +16,7 @@ public class Lexico {
     private static String sourceCode;
     private static List<Token> list; 
 
-    private static final char []charIgnore = { '\t', '\r', '\f' , ' '};
+    private static final char []charIgnore = { '\t', '\r', '\f' , ' ', '\b', '\s'};
     private static final char []charArithmetics = {  '/', '+' , '-', '*'};
     private static final char []charLogics = {'>' , '=', '<'};
     
@@ -30,85 +30,71 @@ public class Lexico {
     }
 
     private static void q0 () throws LexicoException{
-        while (head < sourceCode.length() ||sourceCode.charAt(head) != '\0'){
+        while (head < sourceCode.length()){
             length = 0;
-            switch (sourceCode.charAt(head)) {
+            char currentChar = sourceCode.charAt(head);
+            forward();
+            switch (currentChar) {
                 case 'P':
-                    forward();
                     q1();
                     break;
 
                 case 'v':
-                    forward();
                     q9();
                     break;
 
                 case 'e':
-                    forward();
                     q12();
                     break;
 
                 case 'l':
-                    forward();
                     q26();
                     break;
 
                 case 's':
-                    forward();
                     q30();
                     break;
 
                 case 'p':
-                    forward();
                     q35();
                     break;
                 case '\'':
-                    forward();
                     q39();
                     break;
 
                 case '<':
-                    forward();
                     q40();
                     break;
 
                 case '&':
-                    forward();
                     q41();
                     break;
 
                 case '|':
-                    forward();
                     q42();
                     break;
 
                 case '(':
-                    forward();
                     q43();
                     break;
 
                 case ')':
-                    forward();
                     q44();
                     break;
 
                 case '{':
-                    forward();
                     q45();
                     break;
                 
                 case '}':
-                    forward();
                     q46();
                     break;
                 
                 case ',':
-                    forward();
                     q47();
                     break;
 
                 case ';':
-                    forward();
                     q48();
                     break;
 
@@ -116,29 +102,18 @@ public class Lexico {
                     breakLine();
                     break;
                 
-                case '\0':
-                    return;
-                
                 default:
-                    if (Character.isLetter(sourceCode.charAt(head))){
-                        forward();
+                    if (Character.isLetter(currentChar)){
                         qId();
-                    }else
-                    if (Character.isDigit(sourceCode.charAt(head))){
-                        forward();
+                    }else if (Character.isDigit(currentChar)){
                         qNum();
-                    }else if (isLogic(sourceCode.charAt(head))){
-                        forward();
+                    }else if (isLogic(currentChar)){
                         qLogic();
-                    }else if (isArithmetic(sourceCode.charAt(head))){
-                        forward();
+                    }else if (isArithmetic(currentChar)){
                         qArit();
-                    }else if (isIgnore(sourceCode.charAt(head))){
-                        forward();
-                    }else {
+                    }else if (!isIgnore(currentChar)){
                         throw new LexicoException("Caracter não identificado na linha " + position.getLine() + ", coluna " + position.getColumn());
                     }
-                    break;
             }
         }
     }
@@ -603,7 +578,6 @@ public class Lexico {
     private static void breakLine() {
         position.incrementLine();
         position.setColumn(1);
-        incrementHead();
     }
 
     private static boolean isLogic (char ch) {

@@ -14,7 +14,6 @@ public class MyFile {
 
                 code+= sc.nextLine() + '\n';
             }
-            code += '\0';
         }catch (Exception e) {
             e.printStackTrace();
         }
