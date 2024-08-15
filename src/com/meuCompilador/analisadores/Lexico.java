@@ -101,7 +101,9 @@ public class Lexico {
                 case '\n':
                     breakLine();
                     break;
-                
+                case '\t':
+                    sumColumn(3);
+                    break;
                 default:
                     if (Character.isLetter(currentChar)){
                         qId();
@@ -391,6 +393,7 @@ public class Lexico {
         if (!Character.isLetter(sourceCode.charAt(head)) && !Character.isDigit(sourceCode.charAt(head))){
             insereToken(TypeToken.IF, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
         }else if (sourceCode.charAt(head) == 'n') {
+            forward();
             q32();
         }else {
             qId();
@@ -568,6 +571,10 @@ public class Lexico {
     private static void incrementHead () { head++;}
 
     private static void incrementLength () { length++;}
+
+    private static void sumColumn (int value) {
+        position.setColumn(position.getColumn() + value);
+    }
 
     private static void forward () {
         incrementHead();

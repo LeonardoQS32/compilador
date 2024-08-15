@@ -1,6 +1,26 @@
 Programa {
-	para (i <- 100000000000.1 +i + i; i >=<=<- 10; +i){
-		x<- x+x;
-		/x;
-	}	
+	var a, b, c, x;
+
+	c <- 1000.1;
+	a <- 7 * 12 / (1 - 1);
+
+	se (b == 7 || c <> 13) {
+		escreva (33);
+	}
+
+	se (a > b && a <= b) {
+		escreva('b maior que A');
+	}senao {
+		escreva (a,a,c,'string', 77, 76.5);
+	}
+	
+	para (i <- 7 - 7; i <= 10; +i) {
+		escreva ('contando...' , i);
+	}
+
+	leia(x);
+	enquanto (x <> 7){
+		+x;
+	}
+	x <- x - (b * c /(a + b));
 }

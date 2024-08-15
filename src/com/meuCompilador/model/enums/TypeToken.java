@@ -49,5 +49,6 @@ public enum TypeToken {
     NTFOR,
     NTARIT,
     NTARIT_LIST,
-    NTMORE_ARIT
+    NTMORE_ARIT,
+    SIGN
 }
