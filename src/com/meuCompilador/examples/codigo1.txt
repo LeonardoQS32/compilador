@@ -1,5 +1,5 @@
 Programa {
-	var a, b, c, x;
+	var a, b, c, x, i;
 
 	c <- 1000.1;
 	a <- 7 * 12 / (1 - 1);

@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.meuCompilador.analisadores.Lexico;
+import com.meuCompilador.analisadores.Sematico;
 import com.meuCompilador.analisadores.Sintatico;
 import com.meuCompilador.exceptions.LexicoException;
+import com.meuCompilador.exceptions.SemanticoException;
 import com.meuCompilador.exceptions.SintaticoException;
 import com.meuCompilador.model.entities.Token;
 import com.meuCompilador.ui.UI;
@@ -32,6 +34,9 @@ public class Program {
                     case 2:
                         analiseSintatica(sourceCode);
                         break;
+                    case 3:
+                        analiseSemantica(sourceCode);
+                        break;
                     case 4:
                         todasAnalises(sourceCode);
                         break;
@@ -51,6 +56,8 @@ public class Program {
                 
             }catch(SintaticoException e) {
                 System.out.println("Erro sintático: " + e.getMessage());
+            }catch (SemanticoException e){
+                System.out.println(e.getMessage());
             }
             UI.pauseConsole(sc);
         } 
@@ -65,10 +72,14 @@ public class Program {
 
     }
 
-    private static void todasAnalises (String sourceCode) throws LexicoException, SintaticoException {
+    private static void analiseSemantica (String sourceCode) throws LexicoException, SemanticoException {
+        System.out.println((Sematico.check(Lexico.checkTokens(sourceCode))) ? "Semantica correta." : "");
+    }
+
+    private static void todasAnalises (String sourceCode) throws LexicoException, SintaticoException, SemanticoException {
         List<Token> list = Lexico.checkTokens(sourceCode);
         UI.printTokens(list);
         System.out.println("\n" + ((Sintatico.checkSyntax(list)) ? "Sintaxe correta." : "Sintax incorreta")); 
+        System.out.println((Sematico.check(list)) ? "Semantica correta." : "");
     }
-
 }

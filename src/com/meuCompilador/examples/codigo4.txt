@@ -1,5 +1,7 @@
 programa {	
-	Para (i <- 7 - 7; i <= 10; +i) {
-		esc$reva ('contando...' , i);
+	var i, a, b, c, d, e;
+	Para (i <- 7 - 7; i <= 10 &&||&&; +i) {
+		escreva ('contando...' , i);
 	}
+	b <- (a + c) + 3 + (4 * e);
 }
