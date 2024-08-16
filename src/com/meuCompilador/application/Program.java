@@ -1,24 +1,19 @@
 package com.meuCompilador.application;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import com.meuCompilador.analisadores.Lexico;
 import com.meuCompilador.analisadores.Sintatico;
 import com.meuCompilador.exceptions.LexicoException;
-import com.meuCompilador.model.entities.Token;
 import com.meuCompilador.ui.UI;
 public class Program {
 
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
         int op = 0;
-        String  sourceCode = "";
-        List<Token> listTokens = new ArrayList<>();
-        try (Scanner sc = new Scanner(System.in)){
-            sourceCode = UI.openCode(sc);         
-            listTokens = Lexico.checkTokens(sourceCode);
-            while (op != 5) {
+        String sourceCode = UI.openCode(sc);
+        while (op != 6) {
+            try {            
                 UI.clearConsole();
                 UI.printCode(sourceCode);
                 op = UI.displayMenu(sc);
@@ -29,21 +24,25 @@ public class Program {
             
                 switch (op) {
                     case 1:
-                        UI.printTokens(listTokens);
+                        UI.printTokens(Lexico.checkTokens(sourceCode));
                         break;
-
                     case 2:
-                        System.out.println(Sintatico.checkSyntax(listTokens)); 
+                        System.out.println(Sintatico.checkSyntax(Lexico.checkTokens(sourceCode))); 
                         break;
                     case 5:
+                        sourceCode = UI.openCode(sc);
                         break;
+                    case 6:
+                        System.out.println("Encerrado.");
                     default:
                         System.out.println("Opção indisponivel");
                 }
-                UI.pauseConsole(sc);
-            }       
-        }catch(LexicoException e) {
-            System.out.println(e.getMessage());
-        }
+                
+            }catch(LexicoException e) {
+                System.out.println(e.getMessage());
+            }
+            UI.pauseConsole(sc);
+        } 
+        sc.close();      
     }
 }

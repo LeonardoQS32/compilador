@@ -37,7 +37,7 @@ public class UI {
 
     public static int displayMenu (Scanner sc) {
         System.out.println("O que deseja realizar com o codigo?");
-        System.out.println("\n1- Analise lexico \n2- Analise sintatico \n3- Analise semantico \n4- Analise completa \n5- Sair");
+        System.out.println("\n1- Analise lexico \n2- Analise sintatico \n3- Analise semantico \n4- Analise completa \n5- Abrir outro codigo \n6- Sair");
         return sc.nextInt();
     }
 
@@ -77,7 +77,7 @@ public class UI {
     }
 
     public static void pauseConsole (Scanner sc) {
-        System.out.println("Precione qualquer tecla para continuar...");
+        System.out.println("\nPrecione enter para continuar...");
         sc.nextLine();
     }
 }

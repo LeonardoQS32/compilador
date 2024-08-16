@@ -24,15 +24,11 @@ public class Sintatico {
     }
 
     private static boolean compare (){
-        TypeToken primeiroLista = listTokens.get(0).getType(), topoPilha = stackTokens.peek().getType();
-        System.out.println(primeiroLista);
-        System.out.println("------>"+topoPilha);
+        TypeToken primeiroLista = listTokens.get(0).getType();
+        TypeToken topoPilha = stackTokens.pop().getType();
 
         if (topoPilha == primeiroLista){
-            System.out.println("Removendo da lista: " + listTokens.get(0).getType());
-            System.out.println("Removendo da pilha: " + stackTokens.peek().getType());
             listTokens.remove(0);
-            stackTokens.pop();
         }else if (topoPilha == TypeToken.NTPROGRAM && primeiroLista == TypeToken.LABEL_PROGRAM){// se <PROGRAM> == Label_program
             p0();
         } else if (topoPilha == TypeToken.NTCOMMAND_LIST){ // pilha == <COMAND_LIST>
@@ -164,13 +160,14 @@ public class Sintatico {
                 p43();
             }
         }else if(!stackTokens.isEmpty()){
+            System.out.println(primeiroLista + " Inesperado " + " em " + listTokens.get(0).getPosition());
             return false;
         }
+        System.out.println("--" + topoPilha);
         return true;
     }
 
     private static void p0 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.CLOSE_BRACE, null, null));
         stackTokens.push(new Token(TypeToken.NTCOMMAND_LIST, null, null));
         stackTokens.push(new Token(TypeToken.OPEN_BRACE, null, null));
@@ -178,60 +175,49 @@ public class Sintatico {
     }
 
     private static void p1 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.NTCOMMAND_LIST, null, null));
         stackTokens.push(new Token(TypeToken.NTCOMMAND, null, null));
     }
 
     private static void p2 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
     }
 
     private static void p3 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.NTDECLARATION, null, null));
     }
 
     private static void p4 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.NTWRITE, null, null));
     }
 
-    private static void p5 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType()); 
+    private static void p5 () { 
         stackTokens.push(new Token(TypeToken.NTREAD, null, null));
     }
 
     private static void p6 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.NTASSIGNS, null, null));
     }
 
     private static void p7 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.NTIF, null, null));
     }
 
     private static void p8 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.NTWHILE, null, null));
     }
 
     private static void p9 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.NTFOR, null, null));
     }
 
     private static void p10 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.SEMICOLON, null, null));
         stackTokens.push(new Token(TypeToken.NTVAR_LIST, null, null));
         stackTokens.push(new Token(TypeToken.ID, null, null));
         stackTokens.push(new Token(TypeToken.LABEL_VAR, null, null));
     }
     
-    private static void p11 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());  
+    private static void p11 () {  
         stackTokens.push(new Token(TypeToken.SEMICOLON, null, null));
         stackTokens.push(new Token(TypeToken.CLOSE_PAR, null, null));
         stackTokens.push(new Token(TypeToken.NTCONTENT_WRITE, null, null));
@@ -240,7 +226,6 @@ public class Sintatico {
     }
     
     private static void p12 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.SEMICOLON, null, null));
         stackTokens.push(new Token(TypeToken.CLOSE_PAR, null, null));
         stackTokens.push(new Token(TypeToken.ID, null, null));
@@ -249,13 +234,11 @@ public class Sintatico {
     }
     
     private static void p13 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.SEMICOLON, null, null));
         stackTokens.push(new Token(TypeToken.NTASSIGN, null, null));
     }
    
     private static void p14 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.CLOSE_BRACE, null, null));
         stackTokens.push(new Token(TypeToken.NTCOMMAND_LIST, null, null));
         stackTokens.push(new Token(TypeToken.OPEN_BRACE, null, null));
@@ -266,7 +249,6 @@ public class Sintatico {
     }
 
     private static void p15 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.CLOSE_BRACE, null, null));
         stackTokens.push(new Token(TypeToken.NTCOMMAND_LIST, null, null));
         stackTokens.push(new Token(TypeToken.OPEN_BRACE, null, null));
@@ -274,7 +256,6 @@ public class Sintatico {
     }
 
     private static void p16 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.CLOSE_BRACE, null, null));
         stackTokens.push(new Token(TypeToken.NTCOMMAND_LIST, null, null));
         stackTokens.push(new Token(TypeToken.OPEN_BRACE, null, null));
@@ -285,7 +266,6 @@ public class Sintatico {
     }
 
     private static void p17 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.CLOSE_BRACE, null, null));
         stackTokens.push(new Token(TypeToken.NTCOMMAND_LIST, null, null));
         stackTokens.push(new Token(TypeToken.OPEN_BRACE, null, null));
@@ -300,88 +280,72 @@ public class Sintatico {
     }
 
     private static void p18 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.NTVAR_LIST, null, null));
         stackTokens.push(new Token(TypeToken.NTMORE_VAR, null, null));
     }
 
     private static void p19 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
     }
 
     private static void p20 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.ID, null, null));
         stackTokens.push(new Token(TypeToken.COMMA, null, null));
     }
 
-    private static void p21 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());  
+    private static void p21 () {  
         stackTokens.push(new Token(TypeToken.NTCONTENT_LIST, null, null));
         stackTokens.push(new Token(TypeToken.NTCONTENT, null, null));
     }
 
     private static void p22 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.NTCONTENT_LIST, null, null));
         stackTokens.push(new Token(TypeToken.NTMORE_CONTENT, null, null));
     }
 
-    private static void p23 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());   
+    private static void p23 () {   
     }
 
     private static void p24 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.NTCONTENT, null, null));
         stackTokens.push(new Token(TypeToken.COMMA, null, null));
     }
 
     private static void p25 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.ID, null, null));
     }
     private static void p26 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.STRING, null, null));
     }
 
     private static void p27 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.NUMBER, null, null));
     }
 
-    private static void p28 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());  
+    private static void p28 () {  
         stackTokens.push(new Token(TypeToken.NTARIT, null, null));
         stackTokens.push(new Token(TypeToken.ASSIGN, null, null));
         stackTokens.push(new Token(TypeToken.ID, null, null));
     }
 
-    private static void p29 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());   
+    private static void p29 () {   
         stackTokens.push(new Token(TypeToken.ID, null, null));
         stackTokens.push(new Token(TypeToken.ARITHMETIC, null, null));
     }
 
     private static void p30 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.NTARIT_LIST, null, null));
         stackTokens.push(new Token(TypeToken.NTVALUE, null, null));
     }
 
-    private static void p31 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType()); 
+    private static void p31 () { 
         stackTokens.push(new Token(TypeToken.ID, null, null));
     }
 
     private static void p32 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.NUMBER, null, null));
     }
 
     private static void p33 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         
         stackTokens.push(new Token(TypeToken.CLOSE_PAR, null, null));
         stackTokens.push(new Token(TypeToken.NTARIT, null, null));
@@ -389,56 +353,46 @@ public class Sintatico {
     }
 
     private static void p34 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.NTARIT_LIST, null, null));
         stackTokens.push(new Token(TypeToken.NTMORE_ARIT, null, null));
     }
 
     private static void p35 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
     }
 
-    private static void p36 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());   
+    private static void p36 () {   
         stackTokens.push(new Token(TypeToken.NTVALUE, null, null));
         stackTokens.push(new Token(TypeToken.ARITHMETIC, null, null));
     }
 
-    private static void p37 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());    
+    private static void p37 () {    
         stackTokens.push(new Token(TypeToken.NTCONDITION_LIST, null, null));
         stackTokens.push(new Token(TypeToken.NTCONDITION, null, null));
     }
 
     private static void p38 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.NTVALUE, null, null));
         stackTokens.push(new Token(TypeToken.LOGIC, null, null));
         stackTokens.push(new Token(TypeToken.NTVALUE, null, null));
     }
 
     private static void p39 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.NTCONDITION_LIST, null, null));
         stackTokens.push(new Token(TypeToken.NTMORE_CONDITION, null, null));
     }
 
     private static void p40 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
     }
 
-    private static void p41 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType()); 
+    private static void p41 () { 
         stackTokens.push(new Token(TypeToken.NTCONDITION, null, null));
         stackTokens.push(new Token(TypeToken.NTCONNECTIVES, null, null));
     }
 
     private static void p42 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.AND, null, null));
     }
     private static void p43 () {
-        System.out.println("Desempilha >> " + stackTokens.pop().getType());
         stackTokens.push(new Token(TypeToken.OR, null, null));
     }
 }

@@ -32,70 +32,67 @@ public class Lexico {
     private static void q0 () throws LexicoException{
         while (head < sourceCode.length()){
             length = 0;
-            char currentChar = sourceCode.charAt(head);
+            char currentChar = Character.toLowerCase(Character.toLowerCase(sourceCode.charAt(head)));
             forward();
             switch (currentChar) {
-                case 'P':
+                case 'p':
                     q1();
                     break;
 
                 case 'v':
-                    q9();
-                    break;
-
-                case 'e':
                     q12();
                     break;
 
+                case 'e':
+                    q15();
+                    break;
+
                 case 'l':
-                    q26();
+                    q29();
                     break;
 
                 case 's':
-                    q30();
+                    q33();
                     break;
 
-                case 'p':
-                    q35();
-                    break;
                 case '\'':
-                    q39();
+                    q38();
                     break;
 
                 case '<':
-                    q40();
+                    q39();
                     break;
 
                 case '&':
-                    q41();
+                    q40();
                     break;
 
                 case '|':
-                    q42();
+                    q41();
                     break;
 
                 case '(':
-                    q43();
+                    q42();
                     break;
 
                 case ')':
-                    q44();
+                    q43();
                     break;
 
                 case '{':
-                    q45();
+                    q44();
                     break;
                 
                 case '}':
-                    q46();
+                    q45();
                     break;
                 
                 case ',':
-                    q47();
+                    q46();
                     break;
 
                 case ';':
-                    q48();
+                    q47();
                     break;
 
                 case '\n':
@@ -114,24 +111,26 @@ public class Lexico {
                     }else if (isArithmetic(currentChar)){
                         qArit();
                     }else if (!isIgnore(currentChar)){
-                        throw new LexicoException("Caracter não identificado na linha " + position.getLine() + ", coluna " + position.getColumn());
+                        throw new LexicoException("Caracter não identificado na linha " + position.getLine() + ", coluna " + (position.getColumn() - 1), sourceCode, head-1, list);
                     }
             }
         }
     }
 
-
     private static void q1 (){
-        if (sourceCode.charAt(head) == 'r'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'r'){
             forward();
             q2();
+        }else if (Character.toLowerCase(sourceCode.charAt(head)) == 'a'){
+            forward();
+            q9();
         }else {
             qId();
         }
     }
 
     private static void q2 (){
-        if (sourceCode.charAt(head) == 'o'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'o'){
             forward();
             q3();
         }else {
@@ -140,7 +139,7 @@ public class Lexico {
     }
 
     private static void q3 (){
-        if (sourceCode.charAt(head) == 'g'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'g'){
             forward();
             q4();
         }else {
@@ -149,7 +148,7 @@ public class Lexico {
     }
 
     private static void q4 (){
-        if (sourceCode.charAt(head) == 'r'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'r'){
             forward();
             q5();
         }else {
@@ -158,7 +157,7 @@ public class Lexico {
     }
 
     private static void q5 (){
-        if (sourceCode.charAt(head) == 'a'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'a'){
             forward();
             q6();
         }else {
@@ -167,7 +166,7 @@ public class Lexico {
     }
 
     private static void q6 (){
-        if (sourceCode.charAt(head) == 'm'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'm'){
             forward();
             q7();
         }else {
@@ -176,7 +175,7 @@ public class Lexico {
     }
 
     private static void q7 (){
-        if (sourceCode.charAt(head) == 'a'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'a'){
             forward();
             q8();
         }else {
@@ -185,7 +184,7 @@ public class Lexico {
     }
 
     private static void q8 (){
-        if (!Character.isLetter(sourceCode.charAt(head)) && !Character.isDigit(sourceCode.charAt(head))){
+        if (!Character.isLetter(Character.toLowerCase(sourceCode.charAt(head))) && !Character.isDigit(Character.toLowerCase(sourceCode.charAt(head)))){
             insereToken(TypeToken.LABEL_PROGRAM, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
         }else {
             qId();
@@ -193,7 +192,7 @@ public class Lexico {
     }
 
     private static void q9 (){
-        if (sourceCode.charAt(head) == 'a'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'r'){
             forward();
             q10();
         }else {
@@ -202,7 +201,7 @@ public class Lexico {
     }
 
     private static void q10 (){
-        if (sourceCode.charAt(head) == 'r'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'a'){
             forward();
             q11();
         }else {
@@ -211,27 +210,24 @@ public class Lexico {
     }
 
     private static void q11 (){
-        if (!Character.isLetter(sourceCode.charAt(head)) && !Character.isDigit(sourceCode.charAt(head))){
-            insereToken(TypeToken.LABEL_VAR, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
+        if (!Character.isLetter(Character.toLowerCase(sourceCode.charAt(head))) && !Character.isDigit(Character.toLowerCase(sourceCode.charAt(head)))){
+            insereToken(TypeToken.FOR, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
         }else {
             qId();
         }
     }
 
     private static void q12 (){
-        if (sourceCode.charAt(head) == 's'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'a'){
             forward();
             q13();
-        }else if (sourceCode.charAt(head) == 'n'){
-            forward();
-            q19();
         }else {
             qId();
         }
     }
 
     private static void q13 (){
-        if (sourceCode.charAt(head) == 'c'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'r'){
             forward();
             q14();
         }else {
@@ -240,25 +236,27 @@ public class Lexico {
     }
 
     private static void q14 (){
-        if (sourceCode.charAt(head) == 'r'){
-            forward();
-            q15();
+        if (!Character.isLetter(Character.toLowerCase(sourceCode.charAt(head))) && !Character.isDigit(Character.toLowerCase(sourceCode.charAt(head)))){
+            insereToken(TypeToken.LABEL_VAR, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
         }else {
             qId();
         }
     }
 
     private static void q15 (){
-        if (sourceCode.charAt(head) == 'e'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 's'){
             forward();
             q16();
+        }else if (Character.toLowerCase(sourceCode.charAt(head)) == 'n'){
+            forward();
+            q22();
         }else {
             qId();
         }
     }
 
     private static void q16 (){
-        if (sourceCode.charAt(head) == 'v'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'c'){
             forward();
             q17();
         }else {
@@ -267,7 +265,7 @@ public class Lexico {
     }
 
     private static void q17 (){
-        if (sourceCode.charAt(head) == 'a'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'r'){
             forward();
             q18();
         }else {
@@ -276,15 +274,16 @@ public class Lexico {
     }
 
     private static void q18 (){
-        if (!Character.isLetter(sourceCode.charAt(head)) && !Character.isDigit(sourceCode.charAt(head))){
-            insereToken(TypeToken.WRITE, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'e'){
+            forward();
+            q19();
         }else {
             qId();
         }
     }
 
     private static void q19 (){
-        if (sourceCode.charAt(head) == 'q'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'v'){
             forward();
             q20();
         }else {
@@ -293,7 +292,7 @@ public class Lexico {
     }
 
     private static void q20 (){
-        if (sourceCode.charAt(head) == 'u'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'a'){
             forward();
             q21();
         }else {
@@ -302,16 +301,15 @@ public class Lexico {
     }
 
     private static void q21 (){
-        if (sourceCode.charAt(head) == 'a'){
-            forward();
-            q22();
+        if (!Character.isLetter(Character.toLowerCase(sourceCode.charAt(head))) && !Character.isDigit(Character.toLowerCase(sourceCode.charAt(head)))){
+            insereToken(TypeToken.WRITE, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
         }else {
             qId();
         }
     }
 
     private static void q22 (){
-        if (sourceCode.charAt(head) == 'n'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'q'){
             forward();
             q23();
         }else {
@@ -320,7 +318,7 @@ public class Lexico {
     }
 
     private static void q23 (){
-        if (sourceCode.charAt(head) == 't'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'u'){
             forward();
             q24();
         }else {
@@ -329,7 +327,7 @@ public class Lexico {
     }
 
     private static void q24 (){
-        if (sourceCode.charAt(head) == 'o'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'a'){
             forward();
             q25();
         }else {
@@ -338,15 +336,16 @@ public class Lexico {
     }
 
     private static void q25 (){
-        if (!Character.isLetter(sourceCode.charAt(head)) && !Character.isDigit(sourceCode.charAt(head))){
-            insereToken(TypeToken.WHILE, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'n'){
+            forward();
+            q26();
         }else {
             qId();
         }
     }
 
     private static void q26 (){
-        if (sourceCode.charAt(head) == 'e'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 't'){
             forward();
             q27();
         }else {
@@ -355,7 +354,7 @@ public class Lexico {
     }
 
     private static void q27 (){
-        if (sourceCode.charAt(head) == 'i'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'o'){
             forward();
             q28();
         }else {
@@ -364,24 +363,24 @@ public class Lexico {
     }
 
     private static void q28 (){
-        if (sourceCode.charAt(head) == 'a'){
-            forward();
-            q29();
+        if (!Character.isLetter(Character.toLowerCase(sourceCode.charAt(head))) && !Character.isDigit(Character.toLowerCase(sourceCode.charAt(head)))){
+            insereToken(TypeToken.WHILE, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
         }else {
             qId();
         }
     }
 
     private static void q29 (){
-        if (!Character.isLetter(sourceCode.charAt(head)) && !Character.isDigit(sourceCode.charAt(head))){
-            insereToken(TypeToken.READ, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'e'){
+            forward();
+            q30();
         }else {
             qId();
         }
     }
 
     private static void q30 (){
-        if (sourceCode.charAt(head) == 'e'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'i'){
             forward();
             q31();
         }else {
@@ -390,9 +389,7 @@ public class Lexico {
     }
 
     private static void q31 (){
-        if (!Character.isLetter(sourceCode.charAt(head)) && !Character.isDigit(sourceCode.charAt(head))){
-            insereToken(TypeToken.IF, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
-        }else if (sourceCode.charAt(head) == 'n') {
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'a'){
             forward();
             q32();
         }else {
@@ -401,16 +398,15 @@ public class Lexico {
     }
 
     private static void q32 (){
-        if (sourceCode.charAt(head) == 'a'){
-            forward();
-            q33();
+        if (!Character.isLetter(Character.toLowerCase(sourceCode.charAt(head))) && !Character.isDigit(Character.toLowerCase(sourceCode.charAt(head)))){
+            insereToken(TypeToken.READ, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
         }else {
             qId();
         }
     }
 
     private static void q33 (){
-        if (sourceCode.charAt(head) == 'o'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'e'){
             forward();
             q34();
         }else {
@@ -419,15 +415,18 @@ public class Lexico {
     }
 
     private static void q34 (){
-        if (!Character.isLetter(sourceCode.charAt(head)) && !Character.isDigit(sourceCode.charAt(head))){
-            insereToken(TypeToken.ELSE, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
+        if (!Character.isLetter(Character.toLowerCase(sourceCode.charAt(head))) && !Character.isDigit(Character.toLowerCase(sourceCode.charAt(head)))){
+            insereToken(TypeToken.IF, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
+        }else if (Character.toLowerCase(sourceCode.charAt(head)) == 'n') {
+            forward();
+            q35();
         }else {
             qId();
         }
     }
 
     private static void q35 (){
-        if (sourceCode.charAt(head) == 'a'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'a'){
             forward();
             q36();
         }else {
@@ -436,7 +435,7 @@ public class Lexico {
     }
 
     private static void q36 (){
-        if (sourceCode.charAt(head) == 'r'){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == 'o'){
             forward();
             q37();
         }else {
@@ -445,34 +444,25 @@ public class Lexico {
     }
 
     private static void q37 (){
-        if (sourceCode.charAt(head) == 'a'){
-            forward();
-            q38();
+        if (!Character.isLetter(Character.toLowerCase(sourceCode.charAt(head))) && !Character.isDigit(Character.toLowerCase(sourceCode.charAt(head)))){
+            insereToken(TypeToken.ELSE, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
         }else {
             qId();
         }
     }
 
-    private static void q38 (){
-        if (!Character.isLetter(sourceCode.charAt(head)) && !Character.isDigit(sourceCode.charAt(head))){
-            insereToken(TypeToken.FOR, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
-        }else {
-            qId();
-        }
-    }
-
-    private static void q39() {
-        if (sourceCode.charAt(head) == '\''){
+    private static void q38() {
+        if (Character.toLowerCase(sourceCode.charAt(head)) == '\''){
             forward();
             insereToken(TypeToken.STRING, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
         }else {
             forward();
-            q39();
+            q38();
         }
     }
 
-    private static void q40(){
-        if (sourceCode.charAt(head) == '-'){
+    private static void q39(){
+        if (Character.toLowerCase(sourceCode.charAt(head)) == '-'){
             forward();
             insereToken(TypeToken.ASSIGN, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
         }else {
@@ -480,50 +470,50 @@ public class Lexico {
         }
     }
 
-    private static void q41() throws LexicoException{
-        if (sourceCode.charAt(head) == '&'){
+    private static void q40() throws LexicoException{
+        if (Character.toLowerCase(sourceCode.charAt(head)) == '&'){
             forward();
             insereToken(TypeToken.AND, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
         }else {
-            throw new LexicoException("Caracter não identificado na linha " + position.getLine() + ", coluna " + position.getColumn());
+            throw new LexicoException("Caracter não identificado na linha " + position.getLine() + ", coluna " + (position.getColumn() -1), sourceCode, head-1, list);
         }
     }
 
-    private static void q42() throws LexicoException{
-        if (sourceCode.charAt(head) == '|'){
+    private static void q41() throws LexicoException{
+        if (Character.toLowerCase(sourceCode.charAt(head)) == '|'){
             forward();
             insereToken(TypeToken.OR, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn()- length));
         }else {
-            throw new LexicoException("Caracter não identificado na linha " + position.getLine() + ", coluna " + position.getColumn());
+            throw new LexicoException("Caracter não identificado na linha " + position.getLine() + ", coluna " + (position.getColumn() -1), sourceCode, head-1, list);
         }
     }
 
-    private static void q43(){
+    private static void q42(){
         insereToken(TypeToken.OPEN_PAR, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
     }
 
-    private static void q44(){
+    private static void q43(){
         insereToken(TypeToken.CLOSE_PAR, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
     }
 
-    private static void q45(){
+    private static void q44(){
         insereToken(TypeToken.OPEN_BRACE, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
     }
 
-    private static void q46(){
+    private static void q45(){
         insereToken(TypeToken.CLOSE_BRACE, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
     }
 
-    private static void q47(){
+    private static void q46(){
         insereToken(TypeToken.COMMA, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
     }
 
-    private static void q48(){
+    private static void q47(){
         insereToken(TypeToken.SEMICOLON, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
     }
 
     private static void qId () {
-        if (Character.isLetter(sourceCode.charAt(head)) || Character.isDigit(sourceCode.charAt(head))){
+        if (Character.isLetter(Character.toLowerCase(sourceCode.charAt(head))) || Character.isDigit(Character.toLowerCase(sourceCode.charAt(head)))){
             forward();
             qId();
         }else {
@@ -532,10 +522,10 @@ public class Lexico {
     }
 
     private static void qNum () {
-        if ( Character.isDigit(sourceCode.charAt(head))){
+        if ( Character.isDigit(Character.toLowerCase(sourceCode.charAt(head)))){
             forward();
             qNum();
-        }else if (sourceCode.charAt(head) == '.'){
+        }else if (Character.toLowerCase(sourceCode.charAt(head)) == '.'){
             forward();
             qNumDouble();
         }else {
@@ -544,7 +534,7 @@ public class Lexico {
     }
 
     private static void qNumDouble () {
-        if ( Character.isDigit(sourceCode.charAt(head))){
+        if ( Character.isDigit(Character.toLowerCase(sourceCode.charAt(head)))){
             forward();
             qNumDouble();
         }else {
@@ -557,7 +547,7 @@ public class Lexico {
     }
 
     private static void qLogic () {
-        if (isLogic(sourceCode.charAt(head))){
+        if (isLogic(Character.toLowerCase(sourceCode.charAt(head)))){
             forward();
             insereToken(TypeToken.LOGIC, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
         }else {
