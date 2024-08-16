@@ -1,10 +1,13 @@
 package com.meuCompilador.application;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.meuCompilador.analisadores.Lexico;
 import com.meuCompilador.analisadores.Sintatico;
 import com.meuCompilador.exceptions.LexicoException;
+import com.meuCompilador.exceptions.SintaticoException;
+import com.meuCompilador.model.entities.Token;
 import com.meuCompilador.ui.UI;
 public class Program {
 
@@ -24,25 +27,48 @@ public class Program {
             
                 switch (op) {
                     case 1:
-                        UI.printTokens(Lexico.checkTokens(sourceCode));
+                        analiseLexica(sourceCode);
                         break;
                     case 2:
-                        System.out.println(Sintatico.checkSyntax(Lexico.checkTokens(sourceCode))); 
+                        analiseSintatica(sourceCode);
+                        break;
+                    case 4:
+                        todasAnalises(sourceCode);
                         break;
                     case 5:
                         sourceCode = UI.openCode(sc);
                         break;
                     case 6:
                         System.out.println("Encerrado.");
+                        break;
                     default:
                         System.out.println("Opção indisponivel");
                 }
                 
             }catch(LexicoException e) {
-                System.out.println(e.getMessage());
+                UI.printErro(e.getHead(), sourceCode);
+                System.out.println("Erro léxico: " + e.getMessage());
+                
+            }catch(SintaticoException e) {
+                System.out.println("Erro sintático: " + e.getMessage());
             }
             UI.pauseConsole(sc);
         } 
         sc.close();      
     }
+    private static void analiseLexica (String sourceCode) throws LexicoException {
+        UI.printTokens(Lexico.checkTokens(sourceCode));
+    }
+
+    private static void analiseSintatica (String sourceCode) throws LexicoException, SintaticoException {
+        System.out.println("\n" + ((Sintatico.checkSyntax(Lexico.checkTokens(sourceCode))) ? "Sintaxe correta." : "Sintax incorreta")); 
+
+    }
+
+    private static void todasAnalises (String sourceCode) throws LexicoException, SintaticoException {
+        List<Token> list = Lexico.checkTokens(sourceCode);
+        UI.printTokens(list);
+        System.out.println("\n" + ((Sintatico.checkSyntax(list)) ? "Sintaxe correta." : "Sintax incorreta")); 
+    }
+
 }

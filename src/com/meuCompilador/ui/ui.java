@@ -45,6 +45,7 @@ public class UI {
         System.out.println("_".repeat(sizeDiv));
         System.out.println(code);
         System.out.println("_".repeat(sizeDiv));
+        System.out.println();
     }
 
     public static void printTokens (List<Token> list){
@@ -69,6 +70,13 @@ public class UI {
             System.out.println();
             System.out.println("_".repeat(sizeDiv));
         }
+        System.out.println();
+    }
+
+    public static void printErro(int position, String sourceCode) {
+        UI.printCode(sourceCode.substring(0, position)
+                +  "\u001B[31m" + sourceCode.charAt(position) + "\u001B[0m"
+                + sourceCode.substring(position+1, sourceCode.length()));
     }
 
     public static void clearConsole (){

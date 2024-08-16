@@ -111,7 +111,7 @@ public class Lexico {
                     }else if (isArithmetic(currentChar)){
                         qArit();
                     }else if (!isIgnore(currentChar)){
-                        throw new LexicoException("Caracter não identificado na linha " + position.getLine() + ", coluna " + (position.getColumn() - 1), sourceCode, head-1, list);
+                        throw new LexicoException("Caracter não identificado na linha " + position.getLine() + ", coluna " + (position.getColumn() - 1), head-1);
                     }
             }
         }
@@ -475,7 +475,7 @@ public class Lexico {
             forward();
             insereToken(TypeToken.AND, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn() - length));
         }else {
-            throw new LexicoException("Caracter não identificado na linha " + position.getLine() + ", coluna " + (position.getColumn() -1), sourceCode, head-1, list);
+            throw new LexicoException("Caracter não identificado na linha " + position.getLine() + ", coluna " + (position.getColumn() -1), head-1);
         }
     }
 
@@ -484,7 +484,7 @@ public class Lexico {
             forward();
             insereToken(TypeToken.OR, sourceCode.substring(head - length, head), new Position(position.getLine(), position.getColumn()- length));
         }else {
-            throw new LexicoException("Caracter não identificado na linha " + position.getLine() + ", coluna " + (position.getColumn() -1), sourceCode, head-1, list);
+            throw new LexicoException("Caracter não identificado na linha " + position.getLine() + ", coluna " + (position.getColumn() -1), head-1);
         }
     }
 

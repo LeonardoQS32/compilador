@@ -8,13 +8,23 @@ public class Token {
     private String lexema;
     private Position position;
 
+    public Token() {
+    }
+
+    public Token(TypeToken type) {
+        this.type = type;
+    }
+
+    public Token(TypeToken type, String lexema) {
+        this.type = type;
+        this.lexema = lexema;
+    }
+    
     public Token(TypeToken type, String lexema, Position position) {
         this.type = type;
         this.lexema = lexema;
         this.position = position;
     }
-    public Token() {
-        }
 
     public TypeToken getType() {
         return type;

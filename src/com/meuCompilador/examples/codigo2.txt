@@ -1,7 +1,7 @@
 programa {
 	
-	SE (b == 7 ||| c <> 13) {
-		escreva (33);
+	SE (b == 7 || c <> 13) {
+		escreval (33);
 	}
 	
 	Para (i <- 7 - 7; i <= 10; +i) {
@@ -13,4 +13,3 @@ programa {
 		+x;
 	}
 	
-}
