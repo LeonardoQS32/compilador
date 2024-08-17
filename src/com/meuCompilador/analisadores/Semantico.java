@@ -7,7 +7,7 @@ import com.meuCompilador.exceptions.SemanticoException;
 import com.meuCompilador.model.entities.Token;
 import com.meuCompilador.model.enums.TypeToken;
 
-public class Sematico {
+public class Semantico {
 
     public static boolean check(List<Token> list) throws SemanticoException {
         List<Token> vars = new ArrayList<>();
@@ -21,11 +21,10 @@ public class Sematico {
                 }
             }
             
-            if (list.get(i).getType() == TypeToken.ID && vars.indexOf(list.get(i)) == -1){
+            if (list.get(i).getType() == TypeToken.ID && !vars.contains(list.get(i))){
                 throw new SemanticoException("Erro semantico: variavel " + list.get(i).getLexema() + " não foi criada");
             }
         }
         return true;
     }
-    
 }

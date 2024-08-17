@@ -48,5 +48,16 @@ public class Token {
     public String toString() {
         return  type+ "\t | \t" + lexema + "\t | \t ("+ position.getLine() + ", "+ position.getColumn() + ")";
     }
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Token other = (Token) obj;
+        return lexema.equals(other.lexema) && type == other.type;
+    }
 }

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.meuCompilador.analisadores.Lexico;
-import com.meuCompilador.analisadores.Sematico;
+import com.meuCompilador.analisadores.Semantico;
 import com.meuCompilador.analisadores.Sintatico;
 import com.meuCompilador.exceptions.LexicoException;
 import com.meuCompilador.exceptions.SemanticoException;
@@ -73,13 +73,13 @@ public class Program {
     }
 
     private static void analiseSemantica (String sourceCode) throws LexicoException, SemanticoException {
-        System.out.println((Sematico.check(Lexico.checkTokens(sourceCode))) ? "Semantica correta." : "");
+        System.out.println((Semantico.check(Lexico.checkTokens(sourceCode))) ? "Semantica correta." : "");
     }
 
     private static void todasAnalises (String sourceCode) throws LexicoException, SintaticoException, SemanticoException {
         List<Token> list = Lexico.checkTokens(sourceCode);
         UI.printTokens(list);
         System.out.println("\n" + ((Sintatico.checkSyntax(list)) ? "Sintaxe correta." : "Sintax incorreta")); 
-        System.out.println((Sematico.check(list)) ? "Semantica correta." : "");
+        System.out.println((Semantico.check(list)) ? "Semantica correta." : "");
     }
 }
