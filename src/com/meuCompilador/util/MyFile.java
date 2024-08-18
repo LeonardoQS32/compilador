@@ -1,6 +1,9 @@
 package com.meuCompilador.util;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
@@ -18,6 +21,17 @@ public class MyFile {
             e.printStackTrace();
         }
         return code;
+    }
+
+    public static void writeFile (String code) {
+        String path =  "c:\\teste\\codigo-assembly.asm";
+    
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))){
+                bw.write(code);
+                bw.newLine();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     public static void displayFiles (String path) {

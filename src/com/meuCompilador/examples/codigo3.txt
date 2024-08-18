@@ -1,5 +1,14 @@
 programa {	
-	Para (i <- 7 - 7; i <= 10; +i) {
-		escreva ('contando...' , i);
-	}
+var va, a, b, c;
+escreva ('Digite um numero: ');
+	leia(  a);
+	escreva ('\nvoce digitou: ' , a);
+	+b;
+	/a;
+	*a;
+	-b;
+	escreva('\nvalor que voce digitou mais um: ', a);
+	-a;
+	-a;
+	escreva ('\nvalor que voce digitou menos um: ', a);
 }

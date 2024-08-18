@@ -73,6 +73,22 @@ public class UI {
         System.out.println();
     }
 
+    public static void printUnstacked (List<String> unstackeds){
+        for (String unstacked : unstackeds){
+            System.out.println(unstacked);
+        }
+        System.out.println();
+    }
+
+    public static void printVars (List<Token> vars) {
+        System.out.println("Variaveis criadas: ");
+        System.out.print("| ");
+        for (Token var : vars) {
+            System.out.print(var.getLexema() + " | ");
+        }
+        System.out.println();
+    }
+
     public static void printErro(int position, String sourceCode) {
         UI.printCode(sourceCode.substring(0, position)
                 +  "\u001B[31m" + sourceCode.charAt(position) + "\u001B[0m"
