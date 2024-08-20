@@ -9,25 +9,23 @@ import com.meuCompilador.model.enums.TypeToken;
 public class Gerador {
     private static String code;
     private static int ind;
-    private static int contStr;
-    private static int contWrite;
-    private static int contRead;
-    private static int contIncre;
+    private static int countStr;
+    private static int countWrite;
+    private static int countRead;
+    private static int countIncre;
 
-    public static String gerar(List<Token> list) {
+    private static void initializeObts () {
         ind = 2;
-        contStr = 0;
-        contWrite = 0;
-        contRead = 0;
-        contIncre = 0;
+        countStr = 0;
+        countWrite = 0;
+        countRead = 0;
+        countIncre = 0;
         code = "";
-        code += ".data \n";
-        gerarVar(list);
-        List<Token> strs = contString(list);
-        gerarStrings(strs);
-        code += "\n.text \n";
-        code += "\n.globl main \n";
-        code += "\nmain: \n";
+    }
+
+    public static String generateCode(List<Token> list) {
+        initializeObts();
+        generateStart(list);
         while (ind < list.size()){
             switch (list.get(ind).getType()) {
 
@@ -36,28 +34,25 @@ public class Gerador {
                     break;
 
                 case TypeToken.WRITE:
-                    gerarWrite(list);
+                    generateWrite(list);
                     break;
             
                 case TypeToken.READ:
-                    gerarRead(list);
+                    generateRead(list);
                     break;
 
                 case TypeToken.ASSIGN:
                     break;
 
                 case TypeToken.ARITHMETIC:
-                    gerarIncrement(list);
+                    generateIncrement(list);
                     break;
                 default:
                     break;
             }
             ind++;
         }
-        code += "\nend:\n";
-        code += "\tli $v0, 10\n";
-        code += "\tsyscall \n";
-
+        generateEnd();
         return code;
     }
 
@@ -67,7 +62,22 @@ public class Gerador {
        }
     }
 
-    private static void gerarVar (List<Token> list) {
+    private static void generateStart (List<Token> list){
+        code += ".data \n";
+        generateVar(list);
+        generateStrings(countString(list));
+        code += "\n.text \n";
+        code += "\n.globl main \n";
+        code += "\nmain: \n";
+    }
+
+    private static void generateEnd (){
+        code += "\nend:\n";
+        code += "\tli $v0, 10\n";
+        code += "\tsyscall \n";
+    }
+
+    private static void generateVar (List<Token> list) {
         for (int i = 0; i < list.size();i++ ){
             if (list.get(i).getType() == TypeToken.LABEL_VAR){
                 while (list.get(i).getType() != TypeToken.SEMICOLON) {
@@ -80,7 +90,7 @@ public class Gerador {
         }
     }
 
-    private static  List<Token> contString (List<Token> list) {
+    private static  List<Token> countString (List<Token> list) {
         List<Token> strs = new ArrayList<>();
         for (Token to : list) {
             if (to.getType() == TypeToken.STRING){
@@ -92,7 +102,7 @@ public class Gerador {
         return strs;
     }
 
-    private static void gerarStrings (List<Token> strs) {
+    private static void generateStrings (List<Token> strs) {
         int i =0;
         for (Token token : strs) {
             code += "str" + i + ": .asciiz " + token.getLexema() + "\n"; 
@@ -100,15 +110,15 @@ public class Gerador {
         }
     }
 
-    private static void gerarWrite (List<Token> tokens) {
+    private static void generateWrite (List<Token> tokens) {
         ind += 2;
-        code += "\nwrite" + contWrite + ": \n";
+        code += "\nwrite" + countWrite + ": \n";
         while (tokens.get(ind).getType() != TypeToken.SEMICOLON) {
             if (tokens.get(ind).getType() == TypeToken.STRING){
                 code += "\tli $v0, 4 \n";
-                code += "\tla $a0, str" + contStr + "\n";
+                code += "\tla $a0, str" + countStr + "\n";
                 code += "\tsyscall \n";
-                contStr++;
+                countStr++;
             }
             if (tokens.get(ind).getType() == TypeToken.ID){
                 code += "\tlw $a0, " + tokens.get(ind).getLexema() + "\n";
@@ -117,26 +127,26 @@ public class Gerador {
             }
             ind++;
         }
-        contWrite++;
+        countWrite++;
     }
 
-    private static void gerarRead (List<Token> list) {
+    private static void generateRead (List<Token> list) {
         ind += 2;
-        code += "\nread" + contRead + ": \n";
+        code += "\nread" + countRead + ": \n";
         code += "\tli $v0, 5 \n";
         code += "\tsyscall \n";
         code += "\tsw $v0, " + list.get(ind).getLexema() + "\n";
         ind += 2;
-        contRead++;
+        countRead++;
     }
 
-    private static void gerarIncrement (List<Token> list) {
+    private static void generateIncrement (List<Token> list) {
         if (list.get(ind).getLexema().equals("-") || list.get(ind).getLexema().equals("+")){
-            code+= "\nincrement" + contIncre + ": \n";
+            code+= "\nincrement" + countIncre + ": \n";
             code += "\tlw $t0, " + list.get(ind+1).getLexema() + "\n";
             code += "\taddi $t0, $t0 " + list.get(ind).getLexema() + "1\n";
             code += "\tsw $t0, " + list.get(ind+1).getLexema() + "\n";
-            contIncre++;
+            countIncre++;
         }
         ind+= 2;
     }

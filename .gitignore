@@ -12,6 +12,7 @@ target/
 *.log
 *.log.*
 *.tmp
+*.asm
 
 # Logs and temporary files
 *.log

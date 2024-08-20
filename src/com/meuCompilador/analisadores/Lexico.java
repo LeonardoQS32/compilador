@@ -19,101 +19,105 @@ public class Lexico {
     private static final char []charIgnore = { '\t', '\r', '\f' , ' ', '\b', '\s'};
     private static final char []charArithmetics = {  '/', '+' , '-', '*'};
     private static final char []charLogics = {'>' , '=', '<'};
-    
-    public static List<Token> checkTokens (String code) throws LexicoException {
+
+    private static void initializeObjs (String code) {
         list = new ArrayList<>();
         sourceCode = code;
         position = new Position();
         head = 0;
-        q0();
+    }
+    
+    public static List<Token> checkTokens (String code) throws LexicoException {
+        initializeObjs(code);
+        while (head < sourceCode.length()){
+            length = 0;
+            q0();
+        }
         return list;
     }
 
     private static void q0 () throws LexicoException{
-        while (head < sourceCode.length()){
-            length = 0;
-            char currentChar = Character.toLowerCase(Character.toLowerCase(sourceCode.charAt(head)));
-            forward();
-            switch (currentChar) {
-                case 'p':
-                    q1();
-                    break;
+        char currentChar = Character.toLowerCase(Character.toLowerCase(sourceCode.charAt(head)));
+        forward();
+        switch (currentChar) {
+            case 'p':
+                q1();
+                break;
 
-                case 'v':
-                    q12();
-                    break;
+            case 'v':
+                q12();
+                break;
 
-                case 'e':
-                    q15();
-                    break;
+            case 'e':
+                q15();
+                break;
 
-                case 'l':
-                    q29();
-                    break;
+            case 'l':
+                q29();
+                break;
 
-                case 's':
-                    q33();
-                    break;
+            case 's':
+                q33();
+                break;
 
-                case '\'':
-                    q38();
-                    break;
+            case '\'':
+                q38();
+                break;
 
-                case '<':
-                    q39();
-                    break;
+            case '<':
+                q39();
+                break;
 
-                case '&':
-                    q40();
-                    break;
+            case '&':
+                q40();
+                break;
 
-                case '|':
-                    q41();
-                    break;
+            case '|':
+                q41();
+                break;
 
-                case '(':
-                    q42();
-                    break;
+            case '(':
+                q42();
+                break;
 
-                case ')':
-                    q43();
-                    break;
+            case ')':
+                q43();
+                break;
 
-                case '{':
-                    q44();
-                    break;
-                
-                case '}':
-                    q45();
-                    break;
-                
-                case ',':
-                    q46();
-                    break;
+            case '{':
+                q44();
+                break;
+            
+            case '}':
+                q45();
+                break;
+            
+            case ',':
+                q46();
+                break;
 
-                case ';':
-                    q47();
-                    break;
+            case ';':
+                q47();
+                break;
 
-                case '\n':
-                    breakLine();
-                    break;
-                case '\t':
-                    sumColumn(3);
-                    break;
-                default:
-                    if (Character.isLetter(currentChar)){
-                        qId();
-                    }else if (Character.isDigit(currentChar)){
-                        qNum();
-                    }else if (isLogic(currentChar)){
-                        qLogic();
-                    }else if (isArithmetic(currentChar)){
-                        qArit();
-                    }else if (!isIgnore(currentChar)){
-                        throw new LexicoException("Caracter não identificado na linha " + position.getLine() + ", coluna " + (position.getColumn() - 1), head-1, list);
-                    }
-            }
+            case '\n':
+                breakLine();
+                break;
+            case '\t':
+                sumColumn(3);
+                break;
+            default:
+                if (Character.isLetter(currentChar)){
+                    qId();
+                }else if (Character.isDigit(currentChar)){
+                    qNum();
+                }else if (isLogic(currentChar)){
+                    qLogic();
+                }else if (isArithmetic(currentChar)){
+                    qArit();
+                }else if (!isIgnore(currentChar)){
+                    throw new LexicoException("Caracter não identificado na linha " + position.getLine() + ", coluna " + (position.getColumn() - 1), head-1, list);
+                }
         }
     }
 

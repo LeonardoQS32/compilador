@@ -16,9 +16,11 @@ public class UI {
         String savedPath = "src\\com\\meuCompilador\\examples\\";
 
         while (sourceCode.isBlank()) {
+                clearConsole();
                 System.out.println(savedPath + " :\n");
                 MyFile.displayFolder(savedPath);
-                System.out.print("\n\\");
+                System.out.println("\nDigite o nome do arquivo que deseja abrir ou outra pasta para acessar:");
+                System.out.print("\\");
                 typedPath = sc.nextLine();
 
                 mergedPath = savedPath + typedPath;
@@ -35,9 +37,45 @@ public class UI {
         return sourceCode;
     }
 
+    public static String chooseFolder(Scanner sc) {
+        String typedPath = "", mergedPath;
+        String savedPath = "src\\com\\meuCompilador\\examples\\";
+
+        while (!typedPath.equals("-1")) {
+                clearConsole();
+                System.out.println(savedPath + " :\n");
+                MyFile.displayFolders(savedPath);
+                System.out.println("Digite -1 para salvar na pasta atual ou digite outra pasta para acessar.");
+                System.out.print("\\");
+                typedPath = sc.nextLine();
+
+                mergedPath = savedPath + typedPath;
+                if (MyFile.isFolder(mergedPath)){
+                    savedPath = MyFile.getPath(mergedPath) + "\\";
+                } else if (MyFile.isFolder(typedPath)){
+                    savedPath = typedPath + "\\";
+                }
+        }
+        clearConsole();
+        System.out.println(savedPath);
+        System.out.println("Como deseja salvar o arquivo?");
+        typedPath = sc.nextLine();
+        savedPath += typedPath;
+        if (!savedPath.endsWith(".asm")) savedPath += ".asm";
+
+        return savedPath;
+    }
+
     public static int displayMenu (Scanner sc) {
         System.out.println("O que deseja realizar com o codigo?");
-        System.out.println("\n1- Analise lexico \n2- Analise sintatico \n3- Analise semantico \n4- Analise completa \n5- Abrir outro codigo \n6- Sair");
+        System.out.println("\n1- Analise completa "
+                        +"\n2- Analise lexica "
+                        +"\n3- Analise sintatica "
+                        +"\n4- Analise semantica "
+                        +"\n5- Gerar código assembly (MIPS)" 
+                        +"\n6- Abrir outro código "
+                        +"\n7- Encerrar");
+        System.out.print(": ");
         return sc.nextInt();
     }
 
@@ -86,7 +124,7 @@ public class UI {
         for (Token var : vars) {
             System.out.print(var.getLexema() + " | ");
         }
-        System.out.println();
+        System.out.println("\n");
     }
 
     public static void printErro(int position, String sourceCode) {

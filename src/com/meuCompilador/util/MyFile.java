@@ -23,14 +23,22 @@ public class MyFile {
         return code;
     }
 
-    public static void writeFile (String code) {
-        String path =  "c:\\teste\\codigo-assembly.asm";
-    
+    public static boolean writeFile (String code, String path) {    
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))){
                 bw.write(code);
                 bw.newLine();
+                return true;
         }catch (IOException e){
             e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static void displayFolder (String path) {
+        File f = new File(path);
+        File [] files = f.listFiles();
+        for (File file : files){
+            System.out.println(file.getName());
         }
     }
 
@@ -42,19 +50,19 @@ public class MyFile {
         }
     }
 
-    public static String getPath (String stringpath) {
-        Path path = Paths.get(stringpath);    
-        return path.normalize().toString();
-    }
-
-    public static void displayFolder (String path) {
+    public static void displayFolders (String path) {
         File f = new File(path);
-        File [] files = f.listFiles();
+        File [] files = f.listFiles(File :: isDirectory);
         for (File file : files){
             System.out.println(file.getName());
         }
     }
 
+    public static String getPath (String stringpath) {
+        Path path = Paths.get(stringpath);    
+        return path.normalize().toString();
+    }
+    
     public static boolean isFile (String path) {
         return (new File(path)).isFile();
     }

@@ -14,15 +14,21 @@ public class Sintatico {
     private static Stack<Token> stackTokens;
     private static List<String> unstackedList;
 
-    public static boolean checkSyntax (List<Token> list) throws SintaticoException {
+    private static void initializeObts (List <Token> list){
         unstackedList = new ArrayList<>();
         listTokens = new ArrayList<>(list);
         stackTokens = new Stack<>();
+    }
+
+    public static boolean checkSyntax (List<Token> list) throws SintaticoException {
+        initializeObts(list);
         listTokens.add(new Token(TypeToken.SIGN, "$"));
         stackTokens.push(new Token(TypeToken.SIGN, "$"));
         stackTokens.push(new Token(TypeToken.NTPROGRAM, "<PROGRAM>"));
         while (!stackTokens.isEmpty() && !listTokens.isEmpty() ){
-            compare();
+            String lexema = stackTokens.peek().getLexema();
+            compare(stackTokens.pop().getType(), listTokens.get(0).getType());
+            unstackedList.add(lexema);
         }
 
         return stackTokens.isEmpty() && listTokens.isEmpty();   
@@ -33,232 +39,228 @@ public class Sintatico {
         return unstackedList;
     }
 
-    private static void compare () throws SintaticoException{   
-        String lexema = stackTokens.peek().getLexema();
-        TypeToken topoPilha = stackTokens.pop().getType();
-        TypeToken primeiroLista = listTokens.get(0).getType();
-        if (topoPilha == primeiroLista){
+    private static void compare (TypeToken topStack, TypeToken firstList) throws SintaticoException{   
+        if (topStack == firstList){
             listTokens.remove(0);
         }else{
-            switch (topoPilha) {
+            switch (topStack) {
                 case TypeToken.NTPROGRAM:
                     // <PROGRAM> == Label_program
-                    if (primeiroLista == TypeToken.LABEL_PROGRAM)
+                    if (firstList == TypeToken.LABEL_PROGRAM)
                         p0();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
                 
                 case TypeToken.NTCOMMAND_LIST:
                     //<COMANDO_LIST> == id ou arithmetic ou label_var ou write ou read ou if ou else ou while ou for
-                    if (primeiroLista == TypeToken.ID || primeiroLista == TypeToken.ARITHMETIC || primeiroLista == TypeToken.LABEL_VAR 
-                    || primeiroLista == TypeToken.WRITE || primeiroLista == TypeToken.READ || primeiroLista == TypeToken.IF 
-                    || primeiroLista == TypeToken.ELSE || primeiroLista == TypeToken.WHILE || primeiroLista == TypeToken.FOR)
+                    if (firstList == TypeToken.ID || firstList == TypeToken.ARITHMETIC || firstList == TypeToken.LABEL_VAR 
+                    || firstList == TypeToken.WRITE || firstList == TypeToken.READ || firstList == TypeToken.IF 
+                    || firstList == TypeToken.ELSE || firstList == TypeToken.WHILE || firstList == TypeToken.FOR)
                         p1();
-                    else if (primeiroLista == TypeToken.CLOSE_BRACE)// <COMANDO_LIST> == close_brace
+                    else if (firstList == TypeToken.CLOSE_BRACE)// <COMANDO_LIST> == close_brace
                         p2();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
                 
                 case TypeToken.NTCOMMAND:
                     // <COMAND> == ID OU <COMAND> == ARIT
-                    if (primeiroLista == TypeToken.ID || primeiroLista == TypeToken.ARITHMETIC)
+                    if (firstList == TypeToken.ID || firstList == TypeToken.ARITHMETIC)
                         p6();
-                    else if (primeiroLista == TypeToken.LABEL_VAR)// <COMAND> == Label_var
+                    else if (firstList == TypeToken.LABEL_VAR)// <COMAND> == Label_var
                         p3();
-                    else if (primeiroLista == TypeToken.WRITE)// <COMAND> == write
+                    else if (firstList == TypeToken.WRITE)// <COMAND> == write
                         p4();
-                    else if (primeiroLista == TypeToken.READ)// <COMAND> == read
+                    else if (firstList == TypeToken.READ)// <COMAND> == read
                         p5();
-                    else if (primeiroLista == TypeToken.IF || primeiroLista == TypeToken.ELSE)// <COMAND> == if ou <COMANDO> == else
+                    else if (firstList == TypeToken.IF || firstList == TypeToken.ELSE)// <COMAND> == if ou <COMANDO> == else
                         p7();
-                    else if (primeiroLista == TypeToken.WHILE)// <COMAND> == while
+                    else if (firstList == TypeToken.WHILE)// <COMAND> == while
                         p8();
-                    else if (primeiroLista == TypeToken.FOR)// <COMAND> == for
+                    else if (firstList == TypeToken.FOR)// <COMAND> == for
                         p9();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTDECLARATION:
                     //<DECLARATION> == Label_var
-                    if (primeiroLista == TypeToken.LABEL_VAR)
+                    if (firstList == TypeToken.LABEL_VAR)
                         p10();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;    
 
                 case TypeToken.NTWRITE:
                     //<WRITE> == WRITE
-                    if (primeiroLista == TypeToken.WRITE)
+                    if (firstList == TypeToken.WRITE)
                         p11();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTREAD:
                     //<READ> == READ
-                    if (primeiroLista == TypeToken.READ)
+                    if (firstList == TypeToken.READ)
                         p12();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTASSIGNS:
                     //<ASSIGNS> == ID OU <ASSIGNS> == ARITHMETIC
-                    if (primeiroLista == TypeToken.ID || primeiroLista == TypeToken.ARITHMETIC)
+                    if (firstList == TypeToken.ID || firstList == TypeToken.ARITHMETIC)
                         p13();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTIF:
-                    if (primeiroLista == TypeToken.IF)// <IF> == IF
+                    if (firstList == TypeToken.IF)// <IF> == IF
                         p14();
-                    else if (primeiroLista == TypeToken.ELSE)// <IF> == ELSE
+                    else if (firstList == TypeToken.ELSE)// <IF> == ELSE
                         p15();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTWHILE:
                     //<WHILE> == WHILE
-                    if (primeiroLista == TypeToken.WHILE)
+                    if (firstList == TypeToken.WHILE)
                         p16();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTFOR:
                     //<FOR> == FOR
-                    if (primeiroLista == TypeToken.FOR)
+                    if (firstList == TypeToken.FOR)
                         p17();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTVAR_LIST:
-                    if (primeiroLista == TypeToken.SEMICOLON)// <VAR_LIST> == SEMICOLON
+                    if (firstList == TypeToken.SEMICOLON)// <VAR_LIST> == SEMICOLON
                         p19();
-                    else if (primeiroLista == TypeToken.COMMA)// <VAR_LIST> == COMMA
+                    else if (firstList == TypeToken.COMMA)// <VAR_LIST> == COMMA
                         p18();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTMORE_VAR:
                     //<MORE_VAR> == COMMA
-                    if (primeiroLista == TypeToken.COMMA)
+                    if (firstList == TypeToken.COMMA)
                         p20();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTCONTENT_WRITE:
                     // <CONTENT_WRITE> == STRING OU <CONTENT_WRITE> == ID OU <CONTENT_WRITE> == NUMBER
-                    if (primeiroLista == TypeToken.ID || primeiroLista == TypeToken.STRING || primeiroLista == TypeToken.NUMBER)
+                    if (firstList == TypeToken.ID || firstList == TypeToken.STRING || firstList == TypeToken.NUMBER)
                         p21();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTCONTENT_LIST:
-                    if (primeiroLista == TypeToken.CLOSE_PAR)// <CONTENT_LIST> == CLOSE_PAR
+                    if (firstList == TypeToken.CLOSE_PAR)// <CONTENT_LIST> == CLOSE_PAR
                         p23();
-                    else if (primeiroLista == TypeToken.COMMA)// <CONTENT_LIST> == COMMA
+                    else if (firstList == TypeToken.COMMA)// <CONTENT_LIST> == COMMA
                         p22();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTMORE_CONTENT:
                     //<MORE_CONTENT> == COMMA
-                    if (primeiroLista == TypeToken.COMMA)
+                    if (firstList == TypeToken.COMMA)
                         p24();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTCONTENT:
-                    if (primeiroLista == TypeToken.ID)// <CONTENT> == ID
+                    if (firstList == TypeToken.ID)// <CONTENT> == ID
                         p25();
-                    else if (primeiroLista == TypeToken.STRING)// <CONTENT> == STRING
+                    else if (firstList == TypeToken.STRING)// <CONTENT> == STRING
                         p26();
-                    else if (primeiroLista == TypeToken.NUMBER)// <CONTENT> == NUMBER
+                    else if (firstList == TypeToken.NUMBER)// <CONTENT> == NUMBER
                         p27();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTASSIGN:
-                    if (primeiroLista == TypeToken.ID)// <ASSIGN> == ID
+                    if (firstList == TypeToken.ID)// <ASSIGN> == ID
                         p28();
-                    else if (primeiroLista == TypeToken.ARITHMETIC)//<ASSIGN> == ARITMETIC
+                    else if (firstList == TypeToken.ARITHMETIC)//<ASSIGN> == ARITMETIC
                         p29();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTARIT:
                     // <ARIT> == NUMBER OU <ARIT_LIST> == ID OU <ARIT_LIST> == OPEN_PAR
-                    if (primeiroLista == TypeToken.NUMBER || primeiroLista == TypeToken.ID || primeiroLista == TypeToken.OPEN_PAR)
+                    if (firstList == TypeToken.NUMBER || firstList == TypeToken.ID || firstList == TypeToken.OPEN_PAR)
                         p30();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTVALUE:
-                    if (primeiroLista == TypeToken.NUMBER)// <VALUE> == NUMBER
+                    if (firstList == TypeToken.NUMBER)// <VALUE> == NUMBER
                         p32();
-                    else if (primeiroLista == TypeToken.ID)// <VALUE> == ID
+                    else if (firstList == TypeToken.ID)// <VALUE> == ID
                         p31();
-                     else if (primeiroLista == TypeToken.OPEN_PAR)// <VALUE> == OPEN_PAR
+                     else if (firstList == TypeToken.OPEN_PAR)// <VALUE> == OPEN_PAR
                         p33();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTARIT_LIST:
                     // <ARIT_LIST> == CLOSE_PAR OU <ARIT_LIST> == SEMICOLON
-                    if (primeiroLista == TypeToken.CLOSE_PAR || primeiroLista == TypeToken.SEMICOLON)
+                    if (firstList == TypeToken.CLOSE_PAR || firstList == TypeToken.SEMICOLON)
                         p35();
-                    else if (primeiroLista == TypeToken.ARITHMETIC)// <ARIT_LIST> == ARIT
+                    else if (firstList == TypeToken.ARITHMETIC)// <ARIT_LIST> == ARIT
                         p34();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTMORE_ARIT:
                     //<MORE_ARIT> == ARITHMETIC
-                    if (primeiroLista == TypeToken.ARITHMETIC)
+                    if (firstList == TypeToken.ARITHMETIC)
                         p36();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTEXPRESSION:
                     //<EXPRESSION> == NUMBER OU <EXORESSION> == ID OU <EXPRESSION> == OPEN_PAR
-                    if (primeiroLista == TypeToken.NUMBER || primeiroLista == TypeToken.ID || primeiroLista == TypeToken.OPEN_PAR)
+                    if (firstList == TypeToken.NUMBER || firstList == TypeToken.ID || firstList == TypeToken.OPEN_PAR)
                         p37();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTCONDITION:
                     //<CONDITION> == NUMBER OU <CONDITION> == ID OU <CONDITION> == OPEN_PAR
-                    if (primeiroLista == TypeToken.NUMBER || primeiroLista == TypeToken.ID || primeiroLista == TypeToken.OPEN_PAR)
+                    if (firstList == TypeToken.NUMBER || firstList == TypeToken.ID || firstList == TypeToken.OPEN_PAR)
                         p38();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTCONDITION_LIST:
                     //<CONDITION_LIST> == CLOSE_PAR OU <CONDITION_LIST> == SEMICOLON
-                    if (primeiroLista == TypeToken.CLOSE_PAR || primeiroLista == TypeToken.SEMICOLON)
+                    if (firstList == TypeToken.CLOSE_PAR || firstList == TypeToken.SEMICOLON)
                         p40();
                     //<CONDITION_LIST> == AND OU <CONDITION_LIST> == OR
-                    else if (primeiroLista == TypeToken.AND || primeiroLista == TypeToken.OR)
+                    else if (firstList == TypeToken.AND || firstList == TypeToken.OR)
                         p39();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTMORE_CONDITION:
                     // <MORE_CONDITION> == AND OU <MORE_CONDITION> == OR 
-                    if (primeiroLista == TypeToken.AND || primeiroLista == TypeToken.OR)
+                    if (firstList == TypeToken.AND || firstList == TypeToken.OR)
                         p41();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
 
                 case TypeToken.NTCONNECTIVES:
-                    if (primeiroLista == TypeToken.AND) // <CONNECTIVES> == AND
+                    if (firstList == TypeToken.AND) // <CONNECTIVES> == AND
                         p42();
-                    else if (primeiroLista == TypeToken.OR)// <CONNECTIVES> == OR
+                    else if (firstList == TypeToken.OR)// <CONNECTIVES> == OR
                         p43();
-                    else throw new SintaticoException (primeiroLista + " inesperado.", unstackedList);
+                    else throw new SintaticoException (firstList + " inesperado.", unstackedList);
                         break;
                 default:
-                    if ( !stackTokens.isEmpty()) throw new SintaticoException("era esperado um " + lexema, unstackedList);
+                    if ( !stackTokens.isEmpty()) throw new SintaticoException("era esperado um " + topStack, unstackedList);
             }
         }
-        unstackedList.add(lexema);
     }
 
     private static void p0 () {

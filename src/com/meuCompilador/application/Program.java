@@ -19,7 +19,7 @@ public class Program {
         Scanner sc = new Scanner(System.in);
         int op = 0;
         String sourceCode = UI.openCode(sc);
-        while (op != 6) {
+        while (op != 7) {
             try {            
                 UI.clearConsole();
                 UI.printCode(sourceCode);
@@ -31,26 +31,28 @@ public class Program {
             
                 switch (op) {
                     case 1:
-                        analiseLexica(sourceCode);
+                        fullAnalysis(sourceCode);
                         break;
                     case 2:
-                        analiseSintatica(sourceCode);
+                        lexicalAnalysis(sourceCode);
                         break;
                     case 3:
-                        analiseSemantica(sourceCode);
+                        syntacticAnalysis(sourceCode);
                         break;
                     case 4:
-                        todasAnalises(sourceCode);
+                        semanticAnalysis(sourceCode);
                         break;
                     case 5:
-                        sourceCode = UI.openCode(sc);
+                        String assemblyCode = generateCode(sourceCode);
+                        UI.pauseConsole(sc);
+                        String pathSave = UI.chooseFolder(sc);
+                        saveFile(assemblyCode, pathSave);
                         break;
                     case 6:
-                        System.out.println("Encerrado.");
+                        sourceCode = UI.openCode(sc);
                         break;
-
                     case 7:
-                        gerarCodigo(sourceCode);
+                        System.out.println("Encerrado.");
                         break;
                     default:
                         System.out.println("Opção indisponivel");
@@ -72,32 +74,34 @@ public class Program {
         } 
         sc.close();      
     }
-    private static void analiseLexica (String sourceCode) throws LexicoException {
+    private static void lexicalAnalysis (String sourceCode) throws LexicoException {
         UI.printTokens(Lexico.checkTokens(sourceCode));
     }
 
-    private static void analiseSintatica (String sourceCode) throws LexicoException, SintaticoException {
+    private static void syntacticAnalysis (String sourceCode) throws LexicoException, SintaticoException {
         UI.printUnstacked(Sintatico.getList(Lexico.checkTokens(sourceCode)));
     }
 
-    private static void analiseSemantica (String sourceCode) throws LexicoException, SemanticoException {
+    private static void semanticAnalysis (String sourceCode) throws LexicoException, SemanticoException {
         UI.printVars(Semantico.getVars(Lexico.checkTokens(sourceCode)));
     }
 
-    private static void todasAnalises (String sourceCode) throws LexicoException, SintaticoException, SemanticoException {
+    private static void fullAnalysis (String sourceCode) throws LexicoException, SintaticoException, SemanticoException {
         List<Token> list = Lexico.checkTokens(sourceCode);
         UI.printTokens(list);
         UI.printUnstacked(Sintatico.getList(list));
         UI.printVars(Semantico.getVars(list));
     }
 
-    private static void gerarCodigo (String sourceCode) throws LexicoException, SintaticoException, SemanticoException {
+    private static String generateCode (String sourceCode) throws LexicoException, SintaticoException, SemanticoException {
         List<Token> list = Lexico.checkTokens(sourceCode);
-        todasAnalises(sourceCode);
-        //if (Sintatico.checkSyntax(list) && Semantico.check(list)){
-            String code = Gerador.gerar(list);
-            UI.printCode(code);
-            MyFile.writeFile(code);
-        //}
+        fullAnalysis(sourceCode);
+        String code = Gerador.generateCode(list);
+        UI.printCode(code);
+        return code;
+    }
+
+    private static void saveFile (String code, String path) {
+        if (MyFile.writeFile(code, path)) System.out.println("Arquivo salvo em:\n" + path);
     }
 }
