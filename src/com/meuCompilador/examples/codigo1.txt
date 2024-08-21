@@ -2,7 +2,8 @@ Programa {
 	var a, b, c, x, i;
 
 	c <- 1000.1;
-	a <- 7 * 12 / (1 - 1);
+	a <- 7 * 12 / (c - 1);
+	leia (b);
 
 	se (b == 7 || c <> 13) {
 		escreva (33);

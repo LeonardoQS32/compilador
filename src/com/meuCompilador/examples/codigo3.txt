@@ -1,12 +1,17 @@
 programa {	
-var va, a, b, c;
+var a, b;
 escreva ('Digite um numero: ');
-	leia(  a);
+	leia( a);
 	escreva ('\nvoce digitou: ' , a);
-	+b;
-	/a;
-	*a;
-	-b;
+	+a;
+	var c;
+	var i;
+	para (i<- 0; i < 10; +i){
+
+	}
+	leia(c);
+	b <- 0;
+	c<- a + b - c;
 	escreva('\nvalor que voce digitou mais um: ', a);
 	-a;
 	-a;

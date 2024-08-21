@@ -1,0 +1,12 @@
+programa {	
+	var a, b, c;
+	escreva ('Digite um numero para calcular o fatorial: ');
+	leia(a);
+	b <- a;
+	c <-1;
+	enquanto (b > 1) {
+		c <- b * c;
+		b <- b -1;
+	}
+	escreva ('Fatorial de ', a, ' é', c);
+}

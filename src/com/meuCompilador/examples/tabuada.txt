@@ -1,0 +1,11 @@
+programa {	
+	var num;
+	escreva ('Digite um numero para calcularmos a tabuada: ');
+	leia( num);
+	escreva ('\nTabuada do ', num, ': \n');
+	var i, x;
+	para (i <- 0; i<= 10; +i){
+		x <- i * num;
+		escreva (num, ' X ', i, ' = ', x);
+	}
+}

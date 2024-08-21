@@ -1,0 +1,23 @@
+programa {	
+	var  a, b, c;
+	leia (a);
+	leia(b);
+	leia (c);
+	se (a > b ){
+		se (b > c) {
+			escreva (a, b, c);
+		}senao {
+			escreva (a, c, b);
+		}
+	}senao {
+		se (c > b){
+			escreva(c, b, a);
+		}senao {
+			se (c > a) {
+				escreva (b, c, a);
+			}senao {
+				escreva (b, a, c);
+			}
+		}
+	}
+}

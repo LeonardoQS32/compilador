@@ -32,7 +32,7 @@ public class Semantico {
                     throw new SemanticoException("variavel [" + list.get(i).getLexema() +"] na posição "+ list.get(i).getPosition() +" não foi criada", vars);
                     
                 }
-                if (list.get(i-2).getType() == TypeToken.READ){
+                if (list.get(i-2).getType() == TypeToken.READ && !initializedVar.contains(list.get(i-2))){
                     initializedVar.add(list.get(i));
                 }
                 if (list.get(i+1).getType() != TypeToken.ASSIGN){
@@ -62,7 +62,9 @@ public class Semantico {
                     }
                     i++;
                 }
-                initializedVar.add(list.get(x-1));
+                if (!initializedVar.contains(list.get(x-1))){ 
+                    initializedVar.add(list.get(x-1));
+                }
             }
         }
         return true;

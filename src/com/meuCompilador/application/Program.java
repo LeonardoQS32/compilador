@@ -82,8 +82,10 @@ public class Program {
         UI.printUnstacked(Sintatico.getList(Lexico.checkTokens(sourceCode)));
     }
 
-    private static void semanticAnalysis (String sourceCode) throws LexicoException, SemanticoException {
-        UI.printVars(Semantico.getVars(Lexico.checkTokens(sourceCode)));
+    private static void semanticAnalysis (String sourceCode) throws LexicoException, SemanticoException, SintaticoException {
+        List<Token> list = Lexico.checkTokens(sourceCode);
+        if (Sintatico.checkSyntax(list))
+            UI.printVars(Semantico.getVars(Lexico.checkTokens(sourceCode)));
     }
 
     private static void fullAnalysis (String sourceCode) throws LexicoException, SintaticoException, SemanticoException {
