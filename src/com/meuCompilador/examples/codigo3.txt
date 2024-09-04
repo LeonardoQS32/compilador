@@ -1,19 +1,13 @@
 programa {	
-var a, b;
-escreva ('Digite um numero: ');
-	leia( a);
-	escreva ('\nvoce digitou: ' , a);
-	+a;
-	var c;
-	var i;
-	para (i<- 0; i < 10; +i){
-
+	var a, b, c;
+	escreva ('Digite um numero: ');
+	leia (a);
+	escre@va ('Digite outro numero: ');
+	leia (b);
+	leia (c);
+	se (a > b){
+		escreva ('\nvariavel A maior que B e B é maior que C');
+	}senao{
+		escreva ('\naquiii.');
 	}
-	leia(c);
-	b <- 0;
-	c<- a + b - c;
-	escreva('\nvalor que voce digitou mais um: ', a);
-	-a;
-	-a;
-	escreva ('\nvalor que voce digitou menos um: ', a);
 }

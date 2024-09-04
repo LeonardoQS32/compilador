@@ -1,0 +1,17 @@
+Programa {
+    var a,b,c;
+    escreva ('Digite os lados do triangulo: ');
+    leia (a);
+    leia (b);
+    leia (c);
+
+    se (a = b && b = c){
+        escreva('É um triangulo equilátero.');
+    }senao {
+        se (a = b || b = c ||  a = c){
+            escreva('É um triangulo isósceles.');
+        }senao {
+            escreva ('É um triangulo escaleno.');
+        }
+    }
+}

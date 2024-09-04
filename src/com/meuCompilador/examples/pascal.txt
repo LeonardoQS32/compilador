@@ -1,0 +1,15 @@
+Programa{
+    var linhas, i;
+    escreva ('Digite a quantidade de linhas da piramide: ');
+    leia (linhas);
+
+    para (i<- 0; i < linhas; +i){
+        var numero, j;
+        numero <- 1;
+        para (j <- 0; j<= i; +j) {
+            escreva(numero, ' ');
+            numero <- numero * (i - j) / (j+1);
+        }
+        escreva ('\n');
+    }
+}

@@ -1,7 +1,10 @@
 programa {	
 	var i, a, b, c, d, e;
-	Para (i <- 7 - 7; i <= 10 &&||&&; +i) {
+	Para (i <- 7 - 7; i <= 10; +i) {
 		escreva ('contando...' , i);
 	}
-	b <- (a + c) + 3 + (4 * e);
+	a <- 1;
+	c <- 3;
+	e <- 6;
+	b <- (a + c) + 3 + (b * e);
 }
